@@ -58,12 +58,15 @@ public class Books {
         model.addAttribute("books", books);
         return "booksdiv.jsp";
     }
-    //find the book by index --- BookService.java
-    @RequestMapping("/books/{index}")
-    public String findBookByIndex(Model model, @PathVariable("index") int index) {
-        Book book = bookService.findBookByIndex(index);
-        model.addAttribute("book", book);
-        return "showBook.jsp";
+    @RequestMapping("/books/edit/{id}")
+    public String editBook(@PathVariable("id") Long id, Model model) {
+        Book book = bookService.findBookById(id);
+        if (book != null){
+            model.addAttribute("book", book);
+            return "editBook.jsp";
+        }else{
+            return "redirect:/books";
+        }
     }
     // route for newBook
     @RequestMapping("/books/new")
@@ -86,15 +89,21 @@ public class Books {
         if (result.hasErrors()) {
             return "editBook.jsp";
         }else{
-            bookService.updateBook(id, book);
+            bookService.updateBook(book);
             return "redirect:/books";
         }
     }
-    // Deleting Data
+    // Deleting Data, Since expects a Long as its argument, we must also edit our controller method to use a Long type id
     @RequestMapping(value="/books/delete/{id}")
-    public String destroyBook(@PathVariable("id") int id) {
+    public String destroyBook(@PathVariable("id") Long id) {
         bookService.destroyBook(id);
         return "redirect:/books";
+    }
+    // Data Repository stuffs from learning platform
+    @RequestMapping("/books/{index}")
+    public String findBookByIndex(@PathVariable("index") Long index, Model model) {
+        model.addAttribute("book", bookService.findBookById(index));
+        return "book";
     }
 
 

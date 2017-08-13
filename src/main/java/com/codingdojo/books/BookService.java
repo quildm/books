@@ -6,9 +6,14 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import com.codingdojo.books.models.Book;
+import com.codingdojo.books.repositories.BookRepository;
 @Service
 public class BookService {
-    
+	private BookRepository bookRepository;
+	
+	 public BookService(BookRepository bookRepository){
+	        this.bookRepository = bookRepository;
+	    }
     // initialize the books variable with values
     private List<Book> books = new ArrayList<Book>(Arrays.asList(
             new Book("Harry Potter and the Sorcerer's Stone", "A boy wizard saving the world", "english", 309),
@@ -20,31 +25,29 @@ public class BookService {
     
     // returns all the books
     public List<Book> allBooks() {
-        return books;
+    	return (List<Book>) bookRepository.findAll();
+    	//return books;
     }
-    //find the book by index  -- Books.java
-    public Book findBookByIndex(int index) {
-        if (index < books.size()){
-            return books.get(index);
-        }else{
-            return null;
-        }
+
+    public Book findBookById(Long index) {
+        return bookRepository.findOne(index);
     }
+    
     // Validate and Post Data -- Books.java
     public void addBook(Book book) {
-        books.add(book);
+    	bookRepository.save(book);
+    	//books.add(book);
     }
     // Updating data
-    public void updateBook(int id, Book book) {
-        if (id < books.size()){
-            books.set(id, book);
-        }
+    public void updateBook(Book book) {
+        bookRepository.save(book);
     }
     // Deleting Data
-    public void destroyBook(int id) {
-        if (id < books.size()){
-            books.remove(id);
-        }
+    public void destroyBook(Long id) {
+//        if (id < books.size()){
+//            books.remove(id);
+//        }
+    	bookRepository.delete(id);
     }
     
 }
