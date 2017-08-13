@@ -1,6 +1,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!-- ... -->
 <c:forEach items="${books}" var="book" varStatus="loop">
+
 <tr>    
     <td><c:out value="${book.title}"/></td>
     <td><c:out value="${book.description}"/></td>
@@ -11,5 +12,6 @@
 </c:forEach>
 <!-- ... -->
 <!-- ... -->
+<p>index</p>
 <form:hidden path="id"/>
 <!-- ... -->
